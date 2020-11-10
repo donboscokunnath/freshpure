@@ -1,0 +1,31 @@
+.static-table-area{
+	margin-left: 200px;
+	margin-bottom: 20px;
+}
+.ml80{
+	margin-left: 80px !important;
+}
+
+.adjustSide{
+	position: unset !important;
+	margin-left:80px !important;
+}
+.content-div{
+	margin: 10px;
+    padding: 15px;
+    background-color: #fff;
+    min-height: 344px;
+}
+.footer-copyright-area{
+   margin-top: 10%;
+   bottom:0;
+}
+
+.mCSB_container{
+	width:200px !important;
+	
+}
+
+.sidebar-nav .metismenu a{
+	font-size: 12px !important;
+}
