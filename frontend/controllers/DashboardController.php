@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\web\Response;
 use frontend\models\LoginForm;
+use common\models\CustomerAddressMapping;
 /**
  * Site controller
  */
@@ -25,11 +26,11 @@ class DashboardController extends Controller {
                         'class' => AccessControl::className(),
                         'rules' => [
                             [
-                                'actions' => ['dashboard'],
+                                'actions' => [],
                                 'allow' => true,
                             ],
                             [
-                                'actions' => [],
+                                'actions' => ['dashboard'],
                                 'allow' => true,
                                 'roles' => ['@'],
                             ],
@@ -57,9 +58,25 @@ class DashboardController extends Controller {
 
        
         public function actionDashboard() {
-          
-         return $this->render('dashboard');  
+            $customerId = Yii::$app->user->identity->id;
+            $model = new CustomerAddressMapping();
+            $customerDetails = $model->getCustomerDetails($customerId);
+            $customerOtherAddress = $model->getCustomerAddress($customerId);
+            return $this->render('dashboard',[
+                                    'customerDetails' => $customerDetails,'customerOtherAddress' => $customerOtherAddress]);  
             
+        }
+
+        public function actionSaveAddress(){
+            $post = Yii::$app->request->post();
+            $address = $post['address'];
+            $landmark = $post['landmark'];
+            $area = $post['area'];
+            $province = $post['province'];
+            $country = $post['country'];
+            $customerId = Yii::$app->user->identity->id;
+            $model = new CustomerAddressMapping();
+            $saveAddress = $model->saveAddress($address,$landmark,$area,$province,$country,$customerId);
         }
 
         
