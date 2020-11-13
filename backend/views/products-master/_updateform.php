@@ -18,7 +18,7 @@ use yii\helpers\ArrayHelper;
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <div class="products-master-form">
-
+<input type="hidden" value="<?=$_GET['id']?>" id="productId">
          <?php
     $form = ActiveForm::begin(
                     ['options' => ['enctype' => 'multipart/form-data']], [
@@ -174,19 +174,132 @@ foreach ($units as $key => $value) {
 
 </div>
 
+<button type="button" style="visibility: hidden;" id="test" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
 
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close">&times;</button>
+          <h4 class="modal-title">Quantity & Price</h4>
+        </div>
+        <div class="bdy"></div>
+        
+      </div>
+      
+    </div>
+  </div>
 
 <script type="text/javascript">
     var html='Price';
     var oldval='';
     var newval="";
    $(document).ready(function(){
+    var productId=$('#productId').val();
+
+    $("#myModal").modal({
+        show:false,
+        backdrop:'static'
+        });
+
+
+
+
     $('.slug').keyup(function() {
             $('#productsmaster-canonical_name').val(getSlug($(this).val()));
         });
-  
+    
+    $(".unit-select").click(function (e) {
+       var allhtml='';
+      if ($(this).is(":checked")) {
+
+
+          varSpanId= $(this).val();
+                allhtml+='<div class="modal-body">';
+                allhtml+='<input type="number" id="quantity-'+varSpanId+'" name="quantity" min="1">';
+                allhtml+='<label for="quantity"> '+$('#unitspan-'+varSpanId).html()+' = </label>';
+                allhtml+='<input type="number" id="amount-'+varSpanId+'" name="amount">';
+                allhtml+='<label for="amount"> AED</label>';  
+                allhtml+='<input type="hidden" savestatus="0" id="hidden-'+varSpanId+'" name="hidded" value="'+varSpanId+'">';   
+                allhtml+='</div>';
+                allhtml+='<div id="alert-note-'+varSpanId+'"></div>';
+                allhtml+='<div class="modal-footer">';
+                allhtml+='<button type="button" id="'+varSpanId+'" onclick="test('+varSpanId+')"  class="btn btn-default save-value">Save</button>';
+                allhtml+='</div>';
+            $('.bdy').html(allhtml);
+                 $('#test').click();
+
+
+
+
+      }else{
+
+          vId= $(this).val();
+                $.ajax({
+                 url:baseurl+'/products-master/delete-for-edit',
+                 data:{'id':vId,'productId':productId},
+                 type:'POST',
+                 success:function(data){
+                   
+                 },
+                 error:function(){
+                 }
+            });
+
+      }
     });
-                function getSlug(str) {
-                  return str.toLowerCase().replace(/ +/g, '-').replace(/[^-\w]/g, '');
-                }
-                </script>
+
+
+    });
+
+
+   function test(id){
+
+   
+    var validate=0;
+    $('#hidden-'+id).val()
+        if($('#quantity-'+id).val()==''||$('#quantity-'+id).val()==0){
+
+          validate=1;  
+        }else{var weight=$('#quantity-'+id).val();}
+        if($('#amount-'+id).val()==''||$('#amount-'+id).val()==0){
+          validate=1;  
+        }else{var amount=$('#quantity-'+id).val()}
+        if(validate==0){
+          
+             $.ajax({
+                 url:baseurl+'/products-master/save-unit-amount',
+                 data:{'unitId':id,'weight':weight,'amount':amount},
+                 type:'POST',
+                 success:function(data){
+                    if(data==1){
+                        $('#alert-note-'+id).html('<div class="alert alert-success" role="alert">Value succesfully saved</div>'); 
+                        setTimeout(function(){
+                           $('#test').click();     
+                        },3000);
+                    }else{
+                         $('#alert-note-'+id).html('<div class="alert alert-danger" role="alert">Sorry something went wrong</div>'); 
+                      setTimeout(function(){
+                           $('#alert-note-'+id).html('');
+                        },3000);   
+                    }
+                 },
+                 error:function(){
+                 }
+            });
+        }else{
+             $('#alert-note-'+id).html('<div class="alert alert-danger" role="alert">Sorry unit or amount cannot be empty</div>');
+                setInterval(function(){
+                             $('#alert-note-'+id).html('');
+                        },3000); 
+        }
+   }
+
+
+function getSlug(str) {
+   return str.toLowerCase().replace(/ +/g, '-').replace(/[^-\w]/g, '');
+}
+</script>

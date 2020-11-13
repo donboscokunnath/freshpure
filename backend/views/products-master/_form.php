@@ -179,16 +179,7 @@ foreach ($units as $key => $value) {
             $('#productsmaster-canonical_name').val(getSlug($(this).val()));
         });
     
-$('#productsmaster-unit_mst_id').change(function(e){
 
- var selectedCountry = $(this).children("option:selected").text();
-  alert("You have selected the country - " + selectedCountry);
-      // $.each($("#productsmaster-unit_mst_id option:selected"), function(){            
-      //       alert($(this).text());
-      //   });
-    // var selectedCountry = $(this).children("option:selected").text();
-    //     alert("You have selected the country - " + selectedCountry);
-});
 
         $(".unit-select").click(function (e) {
             var allhtml='';
