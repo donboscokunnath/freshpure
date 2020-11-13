@@ -56,7 +56,7 @@ use yii\helpers\ArrayHelper;
 foreach ($units as $key => $value) {
    ?> 
    <label class="checkbox-inline">
-    <input class="unit-select" type="checkbox" name="ProductsMaster['unit_mst_id'][]" value="<?=$key?>">
+    <input id="checkbox-<?=$key?>" class="unit-select" type="checkbox" name="ProductsMaster['unit_mst_id'][]" value="<?=$key?>">
     <span id="unitspan-<?=$key?>">
         <?=$value?>
     </span>
@@ -73,7 +73,7 @@ foreach ($units as $key => $value) {
 
     <div id="price-div"></div>
     <?= $form->field($model, 'price')->textInput(['maxlength' => true]) ?>
-
+    <?= $form->field($model, 'discount')->textInput(['maxlength' => true]) ?>
   <?php echo $form->field($model, 'master_unit')->dropDownList($units)->label("Master Unit") ?>
 <?php echo $form->field($model, 'make_top')->dropDownList([1 => 'Yes', 0 => 'No'])->label("Featured") ?>
 
@@ -198,6 +198,7 @@ foreach ($units as $key => $value) {
                 allhtml+='<button type="button" id="'+varSpanId+'" onclick="test('+varSpanId+')"  class="btn btn-default save-value">Save</button>';
                 allhtml+='</div>';
             $('.bdy').html(allhtml);
+            $(".close").attr("id",varSpanId);
                  $('#test').click();
             } else {
                 vId= $(this).val();
@@ -261,6 +262,15 @@ foreach ($units as $key => $value) {
                 function getSlug(str) {
                   return str.toLowerCase().replace(/ +/g, '-').replace(/[^-\w]/g, '');
                 }
+
+
+
+                $('.close').click(function (e) {
+                    var id=$(this).attr('id');
+                    
+                    $('#checkbox-'+id).prop('checked', false);
+                    $('#test').click();
+                });
                 </script>
 
 
