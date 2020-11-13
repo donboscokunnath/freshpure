@@ -21,7 +21,7 @@ use Yii;
  * @property integer $status
  * @property integer $subImages
 * @property integer $master_unit
- 
+ * @property integer $discount
  */
 class ProductsMaster extends \yii\db\ActiveRecord
 {
@@ -41,9 +41,9 @@ class ProductsMaster extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['unit_mst_id','master_unit','subImages','name', 'category', 'min_quantity', 'price', 'description', 'make_top', 'main_image', 'status'], 'required','on'=>'oncreate'],
+            [['discount','unit_mst_id','master_unit','subImages','name', 'category', 'min_quantity', 'price', 'description', 'make_top', 'main_image', 'status'], 'required','on'=>'oncreate'],
             [['name','master_unit','category', 'min_quantity', 'price', 'description', 'make_top', 'status'], 'required','on'=>'onupdate'],
-            [['category', 'unit_mst_id', 'min_quantity', 'make_top', 'status','price'], 'integer'],
+            [['category', 'unit_mst_id', 'min_quantity', 'make_top', 'status','price','discount'], 'integer'],
             [['date'], 'safe'],
             [['description', 'main_image'], 'string'],
             [['name', 'canonical_name'], 'string', 'max' => 250],
@@ -71,6 +71,7 @@ class ProductsMaster extends \yii\db\ActiveRecord
             'make_top' => 'Featured',
             'main_image' => 'Main Image',
             'status' => 'Status',
+            'discount'=>'Discount(%)'
         ];
     }
       public function upload($file, $id, $name,$canonicalname="") {
