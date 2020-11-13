@@ -80,4 +80,37 @@ class CustomerAddressMapping extends \yii\db\ActiveRecord
             'type' => 'Type',
         ];
     }
+
+    public function getCustomerDetails($id){
+        $con = \Yii::$app->db;
+        $query = 'SELECT CONCAT(first_name," ",last_name) as Name,mobile,email,CONCAT(address, ",<br/>", llandmark, ",<br/>", area,",<br/>",province,",<br/>",country) AS custAddress FROM customer_address_mapping WHERE type =1';
+         if($id){
+            $query .= " AND customer_id = $id";
+         }
+        $result = $con->createCommand($query)->queryAll();
+        return $result;
+    }
+
+    public function getCustomerAddress($id){
+        $con = \Yii::$app->db;
+        $query = 'SELECT CONCAT(address, ",<br/>", llandmark, ",<br/>", area,",<br/>",province,",<br/>",country) AS custAddress FROM customer_address_mapping WHERE type =2';
+         if($id){
+            $query .= " AND customer_id = $id";
+         }
+        $result = $con->createCommand($query)->queryAll();
+        return $result;
+    }
+
+    public function saveAddress($address,$landmark,$area,$province,$country,$customerId){
+        $con = \Yii::$app->db;
+        $query = "SELECT COUNT(*) as count FROM customer_address_mapping WHERE customer_id = '$customerId'";
+        $result = $con->createCommand($query)->queryAll();
+        if($result[0]['count'] < 3){
+            $query = "INSERT INTO customer_address_mapping(customer_id,llandmark,area,address,province,country,type) VALUES ('$customerId','$landmark','$area','$address','$province','$country','2')";
+            $result = $con->createCommand($query)->execute();
+            return $result;
+        }else{
+            echo '4';
+        }
+    }
 }
