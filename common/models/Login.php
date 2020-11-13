@@ -35,9 +35,9 @@ class Login  extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['email', 'password', 'auth_key', 'type'], 'required'],
+            [['mobile', 'password', 'auth_key', 'type'], 'required'],
             [['type'], 'integer'],
-            [['email', 'password', 'password_reset_token'], 'string', 'max' => 250],
+            [['mobile', 'password', 'password_reset_token'], 'string', 'max' => 250],
             [['auth_key'], 'string', 'max' => 100],
         ];
     }
@@ -49,7 +49,7 @@ class Login  extends ActiveRecord implements IdentityInterface
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'email' => Yii::t('app', 'Email'),
+            'mobile' => Yii::t('app', 'Mobile'),
             'password' => Yii::t('app', 'Password'),
             'auth_key' => Yii::t('app', 'Auth Key'),
             'password_reset_token' => Yii::t('app', 'Password Reset Token'),
@@ -83,7 +83,7 @@ class Login  extends ActiveRecord implements IdentityInterface
     {
         return static::find()
         ->where([
-            'email' => $username,
+            'mobile' => $username,
             'type' => [10,1],
         ])
         ->one();
