@@ -1,695 +1,465 @@
+<!-- END nav -->
+
+    <section id="home-section" class="hero">
+          <div class="home-slider owl-carousel">
 
 
-                <div class="row">
-                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                       <a href="<?= Yii::$app->request->baseUrl . '/doctors-details' ?>"> 
-                       	<div class="dash-widget">
-							<span class="dash-widget-bg1"><i class="fa fa-stethoscope" aria-hidden="true"></i></span>
-							<div class="dash-widget-info text-right">
-								<h3><?php echo $params['ourDoctors'] ?></h3>
-								<span class="widget-title1">Total Doctors <i class="fa fa-check" aria-hidden="true"></i></span>
-							</div>
-                        </div>
-                       </a> 
-                    </div>
-                     <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                     	 <a href="<?= Yii::$app->request->baseUrl . '/appointments/index2'?>"> 
-                        <div class="dash-widget">
-                            <span class="dash-widget-bg3"><i class="fa fa-user-md" aria-hidden="true"></i></span>
-                            <div class="dash-widget-info text-right">
-                                <h3><?php echo $params['ourAppointments']?></h3>
-                                <span class="widget-title3">Appointments <i class="fa fa-check" aria-hidden="true"></i></span>
-                            </div>
-                        </div>
-                         </a> 
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    	 <a href="<?= Yii::$app->request->baseUrl . '/patient-details' ?>"> 
-                        <div class="dash-widget">
-                            <span class="dash-widget-bg2"><i class="fa fa-wheelchair"></i></span>
-                            <div class="dash-widget-info text-right">
-                                <h3><?php echo $params['ourPatients']?></h3>
-                                <span class="widget-title2">Total Patients <i class="fa fa-check" aria-hidden="true"></i></span>
-                            </div>
-                        </div>
-                         </a> 
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-                    	
-                        <div class="dash-widget">
-                            <span class="dash-widget-bg4"><i class="fa fa-heartbeat" aria-hidden="true"></i></span>
-                            <div class="dash-widget-info text-right">
-                                <h3><?php echo $params['ourInvestigations']?></h3>
-                                <span class="widget-title4">Investigations <i class="fa fa-check" aria-hidden="true"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                    
+         <?php if(!empty($banners)){
+            foreach ($banners as $index => $value) {
+             
+              if(!$value->image==""){
+                $imgUrl=Yii::$app->request->baseUrl.'/uploads/banners/'.$value->id.'/banner-'.$value->id.'.'.$value->image;
+                }else{
+                 $imgUrl="images/bg_1.jpg";
+
+            }
+            $link=($value->link)?$value->link:'';
+          ?>     
+          <div class="slider-item" style="background-image: url(<?=$imgUrl?>);">
+            <div class="overlay"></div>
+            <div class="container">
+              <div class="row slider-text justify-content-center align-items-center" data-scrollax-parent="true">
+
+                <div class="col-md-12 ftco-animate text-center">
+                  <h1 class="mb-2"><?=($value->caption)?$value->caption:''?></h1>
+                  <h2 class="subheading mb-4"><?=($value->description)?$value->description:''?></h2>
+                  <?=($value->button_text)?'<p><a href="'.$link.'" class="btn btn-primary">'.$value->button_text.'</a></p>':''?>
+                  
+                  
+                  
                 </div>
-				<div class="row">
-					<div class="col-12 col-md-8 col-lg-8 col-xl-8">
-						<div class="card">
-							<div class="card-body">
-								<div class="chart-title">
-									<h4>Total Investigations & Appointments In This Year</h4>
-									<!-- <span class="float-right"><i class="fa fa-caret-up" aria-hidden="true"></i> 15% Higher than Last Month</span> -->
-								</div>	
-								<canvas id="linegraph"></canvas>
-							</div>
-						</div>
-					</div>
-					<div class="col-12 col-md-4 col-lg-4 col-xl-4" style="min-height: 100%">
-						<div class="card" style="border:1px solid #05ab9e;">
-							<div class="card-body" style="text-align: center;min-height: 100%;">
-								<div class="chart-title" style="float:left">
-									<h4>Subscription Expiry</h4>
-								</div>
-								<div id="clockdiv" style="margin-top: -5px">
-								  <div>
-								    <span class="days"></span>
-								    <div class="smalltext">Days</div>
-								  </div><br/><br/>
-								  <div>
-								    <span class="hours"></span>
-								    <div class="smalltext">Hours</div>
-								  </div>
-								  <div>
-								    <span class="minutes"></span>
-								    <div class="smalltext">Minutes</div>
-								  </div>
-								  <div>
-								    <span class="seconds"></span>
-								    <div class="smalltext">Seconds</div>
-								  </div>
-								</div>
-								<div id="clockdiv1" style="display:none;text-align: center">
-									<br/><br/>
-									<h1><i class="fa fa-calendar"></i></h1>
-									<h1 id='endDate'></h1>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-12 col-md-4 col-lg-4 col-xl-4">
-                        <div class="card member-panel">
-							<div class="card-header bg-white">
-								<h4 class="card-title mb-0">Today's Doctors Summary</h4>
-							</div>
-                            <div class="card-body">
-                                <ul class="contact-list">
-                                	<?php foreach ($params['doctorSummary'] as $key => $value) { ?>
-                                    <li>
-                                        <div class="contact-cont">
-                                            <div class="float-left user-img m-r-10">
-                                                <a href="profile.html" title="John Doe"><img src="<?= Yii::$app->request->baseUrl; ?>/img/user.jpg" alt="" class="w-40 rounded-circle"><span class="status <?php echo ($value['doctor_id']) ? 'offline' : 'online'?>"></span></a>
-                                            </div>
-                                            <div class="contact-info">
-                                                <span class="contact-name text-ellipsis"><?php echo $value['name']?></span>
-                                                <span class="contact-date"><?php echo ($value['doctor_id']) ? 'Leave' : $value['docId'].' Appointments'?></span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                <?php } ?>
-                                    <!-- <li>
-                                        <div class="contact-cont">
-                                            <div class="float-left user-img m-r-10">
-                                                <a href="profile.html" title="Richard Miles"><img src="<?= Yii::$app->request->baseUrl; ?>/img/user.jpg" alt="" class="w-40 rounded-circle"><span class="status offline"></span></a>
-                                            </div>
-                                            <div class="contact-info">
-                                                <span class="contact-name text-ellipsis">Dr. Naveen Nandagopal</span>
-                                                <span class="contact-date">Leave</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="contact-cont">
-                                            <div class="float-left user-img m-r-10">
-                                                <a href="profile.html" title="John Doe"><img src="<?= Yii::$app->request->baseUrl; ?>/img/user.jpg" alt="" class="w-40 rounded-circle"><span class="status online"></span></a>
-                                            </div>
-                                            <div class="contact-info">
-                                                <span class="contact-name text-ellipsis">Dr. Jerry Varghese</span>
-                                                <span class="contact-date">20 Appointments</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="contact-cont">
-                                            <div class="float-left user-img m-r-10">
-                                                <a href="profile.html" title="Richard Miles"><img src="<?= Yii::$app->request->baseUrl; ?>/img/user.jpg" alt="" class="w-40 rounded-circle"><span class="status online"></span></a>
-                                            </div>
-                                            <div class="contact-info">
-                                                <span class="contact-name text-ellipsis">Dr. Suthambiga</span>
-                                                <span class="contact-date">20 Appointments</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="contact-cont">
-                                            <div class="float-left user-img m-r-10">
-                                                <a href="profile.html" title="John Doe"><img src="<?= Yii::$app->request->baseUrl; ?>/img/user.jpg" alt="" class="w-40 rounded-circle"><span class="status offline"></span></a>
-                                            </div>
-                                            <div class="contact-info">
-                                                <span class="contact-name text-ellipsis">Dr. Moncy Mathai</span>
-                                                <span class="contact-date">Leave</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="contact-cont">
-                                            <div class="float-left user-img m-r-10">
-                                                <a href="profile.html" title="Richard Miles"><img src="<?= Yii::$app->request->baseUrl; ?>/img/user.jpg" alt="" class="w-40 rounded-circle"><span class="status online"></span></a>
-                                            </div>
-                                            <div class="contact-info">
-                                                <span class="contact-name text-ellipsis">Dr. Sunil</span>
-                                                <span class="contact-date">20 Appointments</span>
-                                            </div>
-                                        </div>
-                                    </li> -->
-                                </ul>
+
+              </div>
+            </div>
+          </div>
+           <?php 
+
+            }
+            } 
+            else{
+             ?> 
+        <div class="slider-item" style="background-image: url(images/bg_1.jpg);">
+            <div class="overlay"></div>
+            <div class="container">
+              <div class="row slider-text justify-content-center align-items-center" data-scrollax-parent="true">
+
+                <div class="col-md-12 ftco-animate text-center">
+                  <h1 class="mb-2">We serve Fresh Vegestables &amp; Fruits</h1>
+                  <h2 class="subheading mb-4">We deliver organic vegetables &amp; fruits</h2>
+                  <p><a href="#" class="btn btn-primary">View Details</a></p>
+                </div>
+
+              </div>
+            </div>
+          </div>
+           <?php  } ?>   
+         
+
+
+        </div>
+    </section>
+
+    <section class="ftco-section">
+            <div class="container">
+                <div class="row no-gutters ftco-services">
+          <div class="col-md-3 text-center d-flex align-self-stretch ftco-animate">
+            <div class="media block-6 services mb-md-0 mb-4">
+              <div class="icon bg-color-1 active d-flex justify-content-center align-items-center mb-2">
+                    <span class="flaticon-shipped"></span>
+              </div>
+              <div class="media-body">
+                <h3 class="heading">Free Shipping</h3>
+                <span>On order over $100</span>
+              </div>
+            </div>      
+          </div>
+          <div class="col-md-3 text-center d-flex align-self-stretch ftco-animate">
+            <div class="media block-6 services mb-md-0 mb-4">
+              <div class="icon bg-color-2 d-flex justify-content-center align-items-center mb-2">
+                    <span class="flaticon-diet"></span>
+              </div>
+              <div class="media-body">
+                <h3 class="heading">Always Fresh</h3>
+                <span>Product well package</span>
+              </div>
+            </div>    
+          </div>
+          <div class="col-md-3 text-center d-flex align-self-stretch ftco-animate">
+            <div class="media block-6 services mb-md-0 mb-4">
+              <div class="icon bg-color-3 d-flex justify-content-center align-items-center mb-2">
+                    <span class="flaticon-award"></span>
+              </div>
+              <div class="media-body">
+                <h3 class="heading">Superior Quality</h3>
+                <span>Quality Products</span>
+              </div>
+            </div>      
+          </div>
+          <div class="col-md-3 text-center d-flex align-self-stretch ftco-animate">
+            <div class="media block-6 services mb-md-0 mb-4">
+              <div class="icon bg-color-4 d-flex justify-content-center align-items-center mb-2">
+                    <span class="flaticon-customer-service"></span>
+              </div>
+              <div class="media-body">
+                <h3 class="heading">Support</h3>
+                <span>24/7 Support</span>
+              </div>
+            </div>      
+          </div>
+        </div>
+            </div>
+        </section>
+
+        <section class="ftco-section ftco-category ftco-no-pt">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-6 order-md-last align-items-stretch d-flex">
+                                <div class="category-wrap-2 ftco-animate img align-self-stretch d-flex" style="background-image: url(<?= Yii::$app->request->baseUrl; ?>/images/category.jpg);">
+                                    <div class="text text-center">
+                                        <h2>Vegetables</h2>
+                                        <p>Protect the health of every home</p>
+                                        <p><a href="#" class="btn btn-primary">Shop now</a></p>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="card-footer text-center bg-white">
-                                <!-- <a href="doctors.html" class="text-muted">View all Doctors</a> -->
+                            <div class="col-md-6">
+                                <div class="category-wrap ftco-animate img mb-4 d-flex align-items-end" style="background-image: url(<?= Yii::$app->request->baseUrl; ?>/images/category-1.jpg);">
+                                    <div class="text px-3 py-1">
+                                        <h2 class="mb-0"><a href="#">Fruits</a></h2>
+                                    </div>
+                                </div>
+                                <div class="category-wrap ftco-animate img d-flex align-items-end" style="background-image: url(<?= Yii::$app->request->baseUrl; ?>/images/category-2.jpg);">
+                                    <div class="text px-3 py-1">
+                                        <h2 class="mb-0"><a href="#">Vegetables</a></h2>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-					<div class="col-12 col-md-8 col-lg-8 col-xl-8">
-						<div class="card">
-							<div class="card-body">
-								<div class="chart-title">
-									<h4>Total Earnings In This Year</h4>
-									<div class="float-right">
-										<ul class="chat-user-total">
-											<!-- <li><i class="fa fa-circle current-users" aria-hidden="true"></i>ICU</li>
-											<li><i class="fa fa-circle old-users" aria-hidden="true"></i> OPD</li> -->
-										</ul>
-									</div>
-								</div>	
-								<canvas id="bargraph"></canvas>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-12 col-md-6 col-lg-8 col-xl-8">
-						<div class="card">
-							<div class="card-header">
-								<h4 class="card-title d-inline-block">Upcoming Appointments</h4> <a href="appointments.html" class="btn btn-primary float-right">View all</a>
-							</div>
-							<div class="card-body p-0">
-								<div class="table-responsive">
-									<table class="table mb-0">
-										<thead class="d-none">
-											<tr>
-												<th>Patient Name</th>
-												<th>Doctor Name</th>
-												<th>Timing</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td style="min-width: 200px;">
-													<a class="avatar" href="profile.html">B</a>
-													<h2><a href="profile.html">Bernardo Galaviz <span>New York, USA</span></a></h2>
-												</td>               
-												<td>
-													<h5 class="time-title p-0">Appointment With</h5>
-													<p>Dr. Cristina Groves</p>
-												</td>
-												<td>
-													<h5 class="time-title p-0">Timing</h5>
-													<p>7:00 PM - 7:30PM</p>
-												</td>
-											</tr>
-											<tr>
-												<td style="min-width: 200px;">
-													<a class="avatar" href="profile.html">B</a>
-													<h2><a href="profile.html">Bernardo Galaviz <span>New York, USA</span></a></h2>
-												</td>                
-												<td>
-													<h5 class="time-title p-0">Appointment With</h5>
-													<p>Dr. Cristina Groves</p>
-												</td>
-												<td>
-													<h5 class="time-title p-0">Timing</h5>
-													<p>7:00 PM - 7:30PM</p>
-												</td>
-											</tr>
-											<tr>
-												<td style="min-width: 200px;">
-													<a class="avatar" href="profile.html">B</a>
-													<h2><a href="profile.html">Bernardo Galaviz <span>New York, USA</span></a></h2>
-												</td>                     
-												<td>
-													<h5 class="time-title p-0">Appointment With</h5>
-													<p>Dr. Cristina Groves</p>
-												</td>
-												<td>
-													<h5 class="time-title p-0">Timing</h5>
-													<p>7:00 PM - 7:30PM</p>
-												</td>
-											</tr>
-											<tr>
-												<td style="min-width: 200px;">
-													<a class="avatar" href="profile.html">B</a>
-													<h2><a href="profile.html">Bernardo Galaviz <span>New York, USA</span></a></h2>
-												</td>                  
-												<td>
-													<h5 class="time-title p-0">Appointment With</h5>
-													<p>Dr. Cristina Groves</p>
-												</td>
-												<td>
-													<h5 class="time-title p-0">Timing</h5>
-													<p>7:00 PM - 7:30PM</p>
-												</td>
-											</tr>
-											<tr>
-												<td style="min-width: 200px;">
-													<a class="avatar" href="profile.html">B</a>
-													<h2><a href="profile.html">Bernardo Galaviz <span>New York, USA</span></a></h2>
-												</td>                     
-												<td>
-													<h5 class="time-title p-0">Appointment With</h5>
-													<p>Dr. Cristina Groves</p>
-												</td>
-												<td>
-													<h5 class="time-title p-0">Timing</h5>
-													<p>7:00 PM - 7:30PM</p>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</div>
-						</div>
-					</div>
-                    <div class="col-12 col-md-6 col-lg-4 col-xl-4">
-                        <div class="card member-panel">
-							<div class="card-header bg-white">
-								<h4 class="card-title mb-0">Our Doctors</h4>
-							</div>
-                            <div class="card-body">
-                                <ul class="contact-list">
-                                	<?php foreach ($params['doctorsView'] as $key => $value) { ?>
-                                    <li>
-                                        <div class="contact-cont">
-                                            <div class="float-left user-img m-r-10">
-                                                <a href="profile.html" title="John Doe"><img src="<?= Yii::$app->request->baseUrl; ?>/img/user.jpg" alt="" class="w-40 rounded-circle"><span class="status <?php echo ($value['doctor_id']) ? 'offline' : 'online'?>"></span></a>
-                                            </div>
-                                            <div class="contact-info">
-                                                <span class="contact-name text-ellipsis"><?php echo $value['name']?></span>
-                                                <span class="contact-date"><?php echo $value['spectial']?></span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                <?php } ?>
-                                    <!-- <li>
-                                        <div class="contact-cont">
-                                            <div class="float-left user-img m-r-10">
-                                                <a href="profile.html" title="Richard Miles"><img src="<?= Yii::$app->request->baseUrl; ?>/img/user.jpg" alt="" class="w-40 rounded-circle"><span class="status offline"></span></a>
-                                            </div>
-                                            <div class="contact-info">
-                                                <span class="contact-name text-ellipsis">Dr. Naveen Nandagopal</span>
-                                                <span class="contact-date">MRI Scan</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="contact-cont">
-                                            <div class="float-left user-img m-r-10">
-                                                <a href="profile.html" title="John Doe"><img src="<?= Yii::$app->request->baseUrl; ?>/img/user.jpg" alt="" class="w-40 rounded-circle"><span class="status online"></span></a>
-                                            </div>
-                                            <div class="contact-info">
-                                                <span class="contact-name text-ellipsis">Dr. Jerry Varghese</span>
-                                                <span class="contact-date">CT Scan</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="contact-cont">
-                                            <div class="float-left user-img m-r-10">
-                                                <a href="profile.html" title="Richard Miles"><img src="<?= Yii::$app->request->baseUrl; ?>/img/user.jpg" alt="" class="w-40 rounded-circle"><span class="status online"></span></a>
-                                            </div>
-                                            <div class="contact-info">
-                                                <span class="contact-name text-ellipsis">Dr. Suthambiga</span>
-                                                <span class="contact-date">Pregnancy Test</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="contact-cont">
-                                            <div class="float-left user-img m-r-10">
-                                                <a href="profile.html" title="John Doe"><img src="<?= Yii::$app->request->baseUrl; ?>/img/user.jpg" alt="" class="w-40 rounded-circle"><span class="status offline"></span></a>
-                                            </div>
-                                            <div class="contact-info">
-                                                <span class="contact-name text-ellipsis">Dr. Moncy Mathai</span>
-                                                <span class="contact-date">Eye Test</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="contact-cont">
-                                            <div class="float-left user-img m-r-10">
-                                                <a href="profile.html" title="Richard Miles"><img src="<?= Yii::$app->request->baseUrl; ?>/img/user.jpg" alt="" class="w-40 rounded-circle"><span class="status online"></span></a>
-                                            </div>
-                                            <div class="contact-info">
-                                                <span class="contact-name text-ellipsis">Dr. Sunil</span>
-                                                <span class="contact-date">ECG</span>
-                                            </div>
-                                        </div>
-                                    </li> -->
-                                </ul>
-                            </div>
-                            <div class="card-footer text-center bg-white">
-                                <a href="doctors.html" class="text-muted">View all Doctors</a>
+
+                    <div class="col-md-4">
+                        <div class="category-wrap ftco-animate img mb-4 d-flex align-items-end" style="background-image: url(<?= Yii::$app->request->baseUrl; ?>/images/category-3.jpg);">
+                            <div class="text px-3 py-1">
+                                <h2 class="mb-0"><a href="#">Juices</a></h2>
+                            </div>      
+                        </div>
+                        <div class="category-wrap ftco-animate img d-flex align-items-end" style="background-image: url(<?= Yii::$app->request->baseUrl; ?>/images/category-4.jpg);">
+                            <div class="text px-3 py-1">
+                                <h2 class="mb-0"><a href="#">Dried</a></h2>
                             </div>
                         </div>
                     </div>
-				</div>
-				<div class="row">
-					<div class="col-12 col-md-6 col-lg-8 col-xl-8">
-						<div class="card">
-							<div class="card-header">
-								<h4 class="card-title d-inline-block">New Patients </h4> <a href="patients.html" class="btn btn-primary float-right">View all</a>
-							</div>
-							<div class="card-block">
-								<div class="table-responsive">
-									<table class="table mb-0 new-patient-table">
-										<tbody>
-											<tr>
-												<td>
-													<img width="28" height="28" class="rounded-circle" src="<?= Yii::$app->request->baseUrl; ?>/img/user.jpg" alt=""> 
-													<h2>John Doe</h2>
-												</td>
-												<td>Johndoe21@gmail.com</td>
-												<td>+1-202-555-0125</td>
-												<td><button class="btn btn-primary btn-primary-one float-right">MRI Scan</button></td>
-											</tr>
-											<tr>
-												<td>
-													<img width="28" height="28" class="rounded-circle" src="<?= Yii::$app->request->baseUrl; ?>/img/user.jpg" alt=""> 
-													<h2>Richard</h2>
-												</td>
-												<td>Richard123@yahoo.com</td>
-												<td>202-555-0127</td>
-												<td><button class="btn btn-primary btn-primary-two float-right">CT Scan</button></td>
-											</tr>
-											<tr>
-												<td>
-													<img width="28" height="28" class="rounded-circle" src="<?= Yii::$app->request->baseUrl; ?>/img/user.jpg" alt=""> 
-													<h2>Villiam</h2>
-												</td>
-												<td>Richard123@yahoo.com</td>
-												<td>+1-202-555-0106</td>
-												<td><button class="btn btn-primary btn-primary-three float-right">Eye Test</button></td>
-											</tr>
-											<tr>
-												<td>
-													<img width="28" height="28" class="rounded-circle" src="<?= Yii::$app->request->baseUrl; ?>/img/user.jpg" alt=""> 
-													<h2>Martin</h2>
-												</td>
-												<td>Richard123@yahoo.com</td>
-												<td>776-2323 89562015</td>
-												<td><button class="btn btn-primary btn-primary-four float-right">Blood Test</button></td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-12 col-md-6 col-lg-4 col-xl-4">
-						<div class="hospital-barchart">
-							<h4 class="card-title d-inline-block">Today's Summary</h4>
-						</div>
-						<div class="bar-chart">
-							<!-- <div class="legend">
-								<div class="item">
-									<h4>Level1</h4>
-								</div>
-								
-								<div class="item">
-									<h4>Level2</h4>
-								</div>
-								<div class="item text-right">
-									<h4>Level3</h4>
-								</div>
-								<div class="item text-right">
-									<h4>Level4</h4>
-								</div>
-							</div> -->
-							<div class="chart clearfix">
-								<?php foreach ($params['investigationSummary'] as $key => $value) { ?>
-								<div class="item">
-									<div class="bar">
-										<span class="percent"><?php echo $value['invIdCount']?></span>
-										<div class="item-progress" data-percent="20">
-											<span class="title"><?php echo $value['name']?></span>
-										</div>
-									</div>
-								</div>
-							<?php } ?>
-								<!-- <div class="item">
-									<div class="bar">
-										<span class="percent">7100</span>
-										<div class="item-progress" data-percent="0">
-											<span class="title">Blood Test</span>
-										</div>
-									</div>
-								</div>
-								<div class="item">
-									<div class="bar">
-										<span class="percent">820</span>
-										<div class="item-progress" data-percent="0">
-											<span class="title">Corona Test</span>
-										</div>
-									</div>
-								</div>
-								<div class="item">
-									<div class="bar">
-										<span class="percent">670</span>
-										<div class="item-progress" data-percent="0">
-											<span class="title">Urine Culturing</span>
-										</div>
-									</div>
-								</div>
-								<div class="item">
-									<div class="bar">
-										<span class="percent">300</span>									
-										<div class="item-progress" data-percent="0">
-											<span class="title">Pregnancy Test</span>
-										</div>
-									</div>
-								</div> -->
-							</div>
-						</div>
-					 </div>
-				</div>
-<style>
-h1{
-  color: #396;
-  font-weight: 100;
-  font-size: 40px;
-  margin: 40px 0px 20px;
-}
-#clockdiv1{
-	text-align: center;
-	font-family: sans-serif;
-	color: #00816A;
-	font-weight: 500;
-	text-align: center;
-	font-size: 30px;
-}
+                </div>
+            </div>
+        </section>
 
-#clockdiv{
-	text-align: center;
-	font-family: sans-serif;
-	color: #fff;
-	display: inline-block;
-	font-weight: 100;
-	text-align: center;
-	font-size: 30px;
-}
+    <section class="ftco-section">
+        <div class="container">
+                <div class="row justify-content-center mb-3 pb-3">
+          <div class="col-md-12 heading-section text-center ftco-animate">
+            <span class="subheading">Featured Products</span>
+            <h2 class="mb-4">Our Products</h2>
+            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p>
+          </div>
+        </div>          
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-lg-3 ftco-animate">
+                    <div class="product">
+                        <a href="#" class="img-prod"><img class="img-fluid" src="images/product-1       .jpg" alt="Colorlib Template">
+                            <span class="status">30%</span>
+                            <div class="overlay"></div>
+                        </a>
+                        <div class="text py-3 pb-4 px-3 text-center">
+                            <h3><a href="#">Bell Pepper</a></h3>
+                            <div class="d-flex">
+                                <div class="pricing">
+                                    <p class="price"><span class="mr-2 price-dc">$120.00</span><span class="price-sale">$80.00</span></p>
+                                </div>
+                            </div>
+                            <div class="bottom-area d-flex px-3">
+                                <div class="m-auto d-flex">
+                                    <a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
+                                        <span><i class="ion-ios-menu"></i></span>
+                                    </a>
+                                    <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
+                                        <span><i class="ion-ios-cart"></i></span>
+                                    </a>
+                                    <a href="#" class="heart d-flex justify-content-center align-items-center ">
+                                        <span><i class="ion-ios-heart"></i></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 ftco-animate">
+                    <div class="product">
+                        <a href="#" class="img-prod"><img class="img-fluid" src="images/product-2.jpg" alt="Colorlib Template">
+                            <div class="overlay"></div>
+                        </a>
+                        <div class="text py-3 pb-4 px-3 text-center">
+                            <h3><a href="#">Strawberry</a></h3>
+                            <div class="d-flex">
+                                <div class="pricing">
+                                    <p class="price"><span>$120.00</span></p>
+                                </div>
+                            </div>
+                            <div class="bottom-area d-flex px-3">
+                                <div class="m-auto d-flex">
+                                    <a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
+                                        <span><i class="ion-ios-menu"></i></span>
+                                    </a>
+                                    <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
+                                        <span><i class="ion-ios-cart"></i></span>
+                                    </a>
+                                    <a href="#" class="heart d-flex justify-content-center align-items-center ">
+                                        <span><i class="ion-ios-heart"></i></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 ftco-animate">
+                    <div class="product">
+                        <a href="#" class="img-prod"><img class="img-fluid" src="images/product-3.jpg" alt="Colorlib Template">
+                            <div class="overlay"></div>
+                        </a>
+                        <div class="text py-3 pb-4 px-3 text-center">
+                            <h3><a href="#">Green Beans</a></h3>
+                            <div class="d-flex">
+                                <div class="pricing">
+                                    <p class="price"><span>$120.00</span></p>
+                                </div>
+                            </div>
+                            <div class="bottom-area d-flex px-3">
+                                <div class="m-auto d-flex">
+                                    <a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
+                                        <span><i class="ion-ios-menu"></i></span>
+                                    </a>
+                                    <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
+                                        <span><i class="ion-ios-cart"></i></span>
+                                    </a>
+                                    <a href="#" class="heart d-flex justify-content-center align-items-center ">
+                                        <span><i class="ion-ios-heart"></i></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 ftco-animate">
+                    <div class="product">
+                        <a href="#" class="img-prod"><img class="img-fluid" src="images/product-4.jpg" alt="Colorlib Template">
+                            <div class="overlay"></div>
+                        </a>
+                        <div class="text py-3 pb-4 px-3 text-center">
+                            <h3><a href="#">Purple Cabbage</a></h3>
+                            <div class="d-flex">
+                                <div class="pricing">
+                                    <p class="price"><span>$120.00</span></p>
+                                </div>
+                            </div>
+                            <div class="bottom-area d-flex px-3">
+                                <div class="m-auto d-flex">
+                                    <a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
+                                        <span><i class="ion-ios-menu"></i></span>
+                                    </a>
+                                    <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
+                                        <span><i class="ion-ios-cart"></i></span>
+                                    </a>
+                                    <a href="#" class="heart d-flex justify-content-center align-items-center ">
+                                        <span><i class="ion-ios-heart"></i></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-#clockdiv > div{
-	color: #fff;
-	padding: 4px;
-	border-radius: 7px;
-	background: #00BF96;
-	display: inline-block;
-}
 
-#clockdiv .days{
-	color: #fff;
-	padding: 40px;
-	border-radius: 3px;
-	background: #00816A;
-	display: inline-block;
-}
+                <div class="col-md-6 col-lg-3 ftco-animate">
+                    <div class="product">
+                        <a href="#" class="img-prod"><img class="img-fluid" src="images/product-5.jpg" alt="Colorlib Template">
+                            <span class="status">30%</span>
+                            <div class="overlay"></div>
+                        </a>
+                        <div class="text py-3 pb-4 px-3 text-center">
+                            <h3><a href="#">Tomatoe</a></h3>
+                            <div class="d-flex">
+                                <div class="pricing">
+                                    <p class="price"><span class="mr-2 price-dc">$120.00</span><span class="price-sale">$80.00</span></p>
+                                </div>
+                            </div>
+                            <div class="bottom-area d-flex px-3">
+                                <div class="m-auto d-flex">
+                                    <a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
+                                        <span><i class="ion-ios-menu"></i></span>
+                                    </a>
+                                    <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
+                                        <span><i class="ion-ios-cart"></i></span>
+                                    </a>
+                                    <a href="#" class="heart d-flex justify-content-center align-items-center ">
+                                        <span><i class="ion-ios-heart"></i></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 ftco-animate">
+                    <div class="product">
+                        <a href="#" class="img-prod"><img class="img-fluid" src="images/product-6.jpg" alt="Colorlib Template">
+                            <div class="overlay"></div>
+                        </a>
+                        <div class="text py-3 pb-4 px-3 text-center">
+                            <h3><a href="#">Brocolli</a></h3>
+                            <div class="d-flex">
+                                <div class="pricing">
+                                    <p class="price"><span>$120.00</span></p>
+                                </div>
+                            </div>
+                            <div class="bottom-area d-flex px-3">
+                                <div class="m-auto d-flex">
+                                    <a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
+                                        <span><i class="ion-ios-menu"></i></span>
+                                    </a>
+                                    <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
+                                        <span><i class="ion-ios-cart"></i></span>
+                                    </a>
+                                    <a href="#" class="heart d-flex justify-content-center align-items-center ">
+                                        <span><i class="ion-ios-heart"></i></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 ftco-animate">
+                    <div class="product">
+                        <a href="#" class="img-prod"><img class="img-fluid" src="images/product-7.jpg" alt="Colorlib Template">
+                            <div class="overlay"></div>
+                        </a>
+                        <div class="text py-3 pb-4 px-3 text-center">
+                            <h3><a href="#">Carrots</a></h3>
+                            <div class="d-flex">
+                                <div class="pricing">
+                                    <p class="price"><span>$120.00</span></p>
+                                </div>
+                            </div>
+                            <div class="bottom-area d-flex px-3">
+                                <div class="m-auto d-flex">
+                                    <a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
+                                        <span><i class="ion-ios-menu"></i></span>
+                                    </a>
+                                    <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
+                                        <span><i class="ion-ios-cart"></i></span>
+                                    </a>
+                                    <a href="#" class="heart d-flex justify-content-center align-items-center ">
+                                        <span><i class="ion-ios-heart"></i></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 ftco-animate">
+                    <div class="product">
+                        <a href="#" class="img-prod"><img class="img-fluid" src="images/product-8.jpg" alt="Colorlib Template">
+                            <div class="overlay"></div>
+                        </a>
+                        <div class="text py-3 pb-4 px-3 text-center">
+                            <h3><a href="#">Fruit Juice</a></h3>
+                            <div class="d-flex">
+                                <div class="pricing">
+                                    <p class="price"><span>$120.00</span></p>
+                                </div>
+                            </div>
+                            <div class="bottom-area d-flex px-3">
+                                <div class="m-auto d-flex">
+                                    <a href="#" class="add-to-cart d-flex justify-content-center align-items-center text-center">
+                                        <span><i class="ion-ios-menu"></i></span>
+                                    </a>
+                                    <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
+                                        <span><i class="ion-ios-cart"></i></span>
+                                    </a>
+                                    <a href="#" class="heart d-flex justify-content-center align-items-center ">
+                                        <span><i class="ion-ios-heart"></i></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+        
+        <section class="ftco-section img" style="background-image: url(images/bg_3.jpg);">
+        <div class="container">
+                <div class="row justify-content-end">
+          <div class="col-md-6 heading-section ftco-animate deal-of-the-day ftco-animate">
+            <span class="subheading">Best Price For You</span>
+            <h2 class="mb-4">Deal of the day</h2>
+            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia</p>
+            <h3><a href="#">Spinach</a></h3>
+            <span class="price">$10 <a href="#">now $5 only</a></span>
+            <div id="timer" class="d-flex mt-5">
+                          <div class="time" id="days"></div>
+                          <div class="time pl-3" id="hours"></div>
+                          <div class="time pl-3" id="minutes"></div>
+                          <div class="time pl-3" id="seconds"></div>
+                        </div>
+          </div>
+        </div>          
+        </div>
+    </section>
 
-#clockdiv .hours{
-	color: #fff;
-	padding: 15px;
-	border-radius: 3px;
-	background: #00816A;
-	display: inline-block;
-}
+        
 
-#clockdiv .minutes{
-	color: #fff;
-	padding: 15px;
-	border-radius: 3px;
-	background: #00816A;
-	display: inline-block;
-}
+    <hr>
 
-#clockdiv .seconds{
-	color: #fff;
-	padding: 15px;
-	border-radius: 3px;
-	background: #00816A;
-	display: inline-block;
-}
+        <section class="ftco-section ftco-partner">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm ftco-animate">
+                    <a href="#" class="partner"><img src="images/partner-1.png" class="img-fluid" alt="Colorlib Template"></a>
+                </div>
+                <div class="col-sm ftco-animate">
+                    <a href="#" class="partner"><img src="images/partner-2.png" class="img-fluid" alt="Colorlib Template"></a>
+                </div>
+                <div class="col-sm ftco-animate">
+                    <a href="#" class="partner"><img src="images/partner-3.png" class="img-fluid" alt="Colorlib Template"></a>
+                </div>
+                <div class="col-sm ftco-animate">
+                    <a href="#" class="partner"><img src="images/partner-4.png" class="img-fluid" alt="Colorlib Template"></a>
+                </div>
+                <div class="col-sm ftco-animate">
+                    <a href="#" class="partner"><img src="images/partner-5.png" class="img-fluid" alt="Colorlib Template"></a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-.smalltext{
-	padding-top: 5px;
-	font-size: 14px;
-}
-</style>
-<script>
-	// Set the date we're counting down to
-function getTimeRemaining(endtime) {
-  var t = Date.parse(endtime) - Date.parse(new Date());
-  var seconds = Math.floor((t / 1000) % 60);
-  var minutes = Math.floor((t / 1000 / 60) % 60);
-  var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
-  var days = Math.floor(t / (1000 * 60 * 60 * 24));
-  return {
-    'total': t,
-    'days': days,
-    'hours': hours,
-    'minutes': minutes,
-    'seconds': seconds
-  };
-}
-
-function initializeClock(id, endtime) {
-  var clock = document.getElementById(id);
-  var daysSpan = clock.querySelector('.days');
-  var hoursSpan = clock.querySelector('.hours');
-  var minutesSpan = clock.querySelector('.minutes');
-  var secondsSpan = clock.querySelector('.seconds');
-
-  	function getLastDate(dateObject) {
-	    var d = new Date(dateObject);
-	    var day = d.getDate();
-	    var month = d.getMonth() + 1;
-	    var year = d.getFullYear();
-	    if (day < 10) {
-	        day = "0" + day;
-	    }
-	    if (month < 10) {
-	        month = "0" + month;
-	    }
-	    var date = day + "-" + month + "-" + year;
-
-	    return date;
-	};
-  function updateClock() {
-    var t = getTimeRemaining(endtime);
-    if(t.days <= 30){
-	    daysSpan.innerHTML = t.days;
-	    hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
-	    minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
-	    secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
-	    $('#clockdiv1').hide();
-	    $('#clockdiv').show();
-	}else{
-		$('#clockdiv').hide();
-		$('#clockdiv1').show();
-		$('#endDate').html(getLastDate(endtime));
-	}
-    if (t.total <= 0) {
-      clearInterval(timeinterval);
-    }
-  }
-
-  updateClock();
-  var timeinterval = setInterval(updateClock, 1000);
-}
-
-// var deadline = new Date(Date.parse(new Date()) + 15 * 24 * 60 * 60 * 1000);
-var deadline = new Date("2021-02-21 00:00:00");
-initializeClock('clockdiv', deadline);
-</script>
-
-           <script>
-           	$(document).ready(function() {
-				// Line Chart
-
-				var lineChartData = {
-					labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-					datasets: [{
-						label: "Doctor Appointments",
-						backgroundColor: "rgba(204, 99, 48, 0.5)",
-						borderColor: '#F12404',
-						borderWidth: 1,
-						data: [<?=$params['graph2']['cnt']?>]
-					}, {
-					label: "Investigations",
-					backgroundColor: "rgba(5, 171, 158, 0.5)",
-					borderColor: 'rgba(0, 158, 251, 1)',
-						borderWidth: 1,
-					fill: true,
-					data: [<?=$params['graph1']['cnt']?>]
-					}]
-				};
-
-				var linectx = document.getElementById('linegraph').getContext('2d');
-				window.myLine = new Chart(linectx, {
-					type: 'line',
-					data: lineChartData,
-					options: {
-						responsive: true,
-						legend: {
-							display: false,
-						},
-						tooltips: {
-							mode: 'index',
-							intersect: false,
-						}
-					}
-				});
-
-				// Bar Chart
-
-				var barChartData = {
-					labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-					datasets: [{
-						label: 'Appointments Earnings',
-						backgroundColor: '#ffbc35',//'rgba(0, 158, 251, 0.5)',
-						borderColor: 'rgba(0, 158, 251, 1)',
-						borderWidth: 1,
-						data: [<?=$params['graph2']['amt']?>]
-					}, {
-						label: 'Investigations Earnings',
-						backgroundColor: '#05ab9e',//'rgba(255, 188, 53, 0.5)',
-						borderColor: 'rgba(255, 188, 53, 1)',
-						borderWidth: 1,
-						data: [<?=$params['graph1']['amt']?>]
-					}]
-				};
-
-				var ctx = document.getElementById('bargraph').getContext('2d');
-				window.myBar = new Chart(ctx, {
-					type: 'bar',
-					data: barChartData,
-					options: {
-						responsive: true,
-						legend: {
-							display: false,
-						}
-					}
-				});
-				$('.card-body').parent('div').css("height","93%");
-			});
-           </script>
+        <section class="ftco-section ftco-no-pt ftco-no-pb py-5 bg-light">
+      <div class="container py-4">
+        <div class="row d-flex justify-content-center py-5">
+          <div class="col-md-6">
+            <h2 style="font-size: 22px;" class="mb-0">Subcribe to our Newsletter</h2>
+            <span>Get e-mail updates about our latest shops and special offers</span>
+          </div>
+          <div class="col-md-6 d-flex align-items-center">
+            <form action="#" class="subscribe-form">
+              <div class="form-group d-flex">
+                <input type="text" class="form-control" placeholder="Enter email address">
+                <input type="submit" value="Subscribe" class="submit px-3">
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>

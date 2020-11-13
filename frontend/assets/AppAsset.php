@@ -12,50 +12,45 @@ class AppAsset extends AssetBundle {
         public $basePath = '@webroot';
         public $baseUrl = '@web';
         public $css = [
-            'https://fonts.googleapis.com/icon?family=Material+Icons',
-            'css/bootstrap.min.css',
-            'css/font-awesome.min.css',
-            'css/style.css',
-            'css/fullcalendar.min.css',
-            'css/select2.min.css',
-            'css/bootstrap-datetimepicker.min.css',
-            'css/package.css',
-            
-            'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css',
-            // adding glyficons
-           
-
-
-            // data live search for dropdown
-            // 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css',
-            'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.css'
+            'https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800&display=swap',
+            'https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i&display=swap" rel="stylesheet',
+            'https://fonts.googleapis.com/css?family=Amatic+SC:400,700&display=swap',
+            'css/open-iconic-bootstrap.min.css',
+            'css/animate.css',
+            'css/owl.carousel.min.css',
+            'css/owl.theme.default.min.css',
+            'css/magnific-popup.css',
+            'css/aos.css',
+            'css/ionicons.min.css',
+            'css/bootstrap-datepicker.css',
+            'css/jquery.timepicker.css',
+            'css/flaticon.css',
+            'css/icomoon.css',
+            'css/style.css'
         ];
         public $js = [
-            // 'js/jquery-3.2.1.min.js',
+            // 'js/jquery.min.js',
+            // 'https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js',
+            'js/jquery-migrate-3.0.1.min.js',
             'js/popper.min.js',
             'js/bootstrap.min.js',
-            'js/jquery.slimscroll.js',
-            'js/Chart.bundle.js',
-            // 'js/select2.min.js',
-            'js/moment.min.js',
-            // 'js/jquery-ui.min.html',
-            'js/fullcalendar.min.js',
-            'js/jquery.fullcalendar.js',
-            'js/bootstrap-datetimepicker.min.js',
-            'js/app.js',
-            //data live search for dropdown
-            // 'https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js',
-            // 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js',
-            '//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js',
-            'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js',
-            //'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.js',
-            //'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js'
+            'js/jquery.easing.1.3.js',
+            'js/jquery.waypoints.min.js',
+            'js/jquery.stellar.min.js',
+            'js/owl.carousel.min.js',
+            'js/jquery.magnific-popup.min.js',
+            'js/aos.js',
+            'js/jquery.animateNumber.min.js',
+            'js/bootstrap-datepicker.js',
+            'js/scrollax.min.js',
+            'https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false',
+            // 'js/google-map.js',
+            'js/main.js',
+
+
         ];
-        // public $video = [
-        //     'video/images',
-        //     'video/vid.mp4'
-        // ];
         public $depends = [
+              // 'yii\jui\JuiAsset',
             'yii\web\YiiAsset',
             // 'yii\bootstrap\BootstrapAsset',
         ];
