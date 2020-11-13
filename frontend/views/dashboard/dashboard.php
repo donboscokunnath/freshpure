@@ -1,6 +1,10 @@
  <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
  <style>
 /*  bhoechie tab */
 div.bhoechie-tab-container{
@@ -91,6 +95,10 @@ a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.acti
   font-size: 18px;
 }
 
+.modal-backdrop{
+  display:none;
+}
+
 button {
   border: none;
   outline: 0;
@@ -115,27 +123,35 @@ button:hover, a:hover {
 } 
 
 .address-view.active{
-height: 63px;
- margin-top: 5px;
-    background: #8ab352;
-    border: 1px solid #8ab352;
-    color: #fff;
-    border-radius: 29px;
-    padding-top: 20px;
-    cursor: pointer;
+  min-height: 250px;
+  max-height: 300px;
+  margin-top: 5px;
+  background: #8ab352;
+  border: 1px solid #8ab352;
+  color: #fff;
+  padding-top: 10px;
+  cursor: pointer;
  }   
 .address-view{
-height: 63px;
-    margin-top: 5px;
-    border: 1px solid #8ab352;
-    color: black;
-    border-radius: 29px;
-    
-    padding-top: 20px;
-    cursor: pointer;
+  min-height: 250px;
+  max-height: 300px;
+  margin-top: 5px;
+  border: 1px solid #8ab352;
+  color: #8ab352;
+  padding-top: 10px;
+  cursor: pointer;
  }   
 
-
+.orderHistory{
+  margin-top: 5px;
+  background: #8ab352;
+  border: 1px solid #8ab352;
+  color: #fff;
+  padding-top: 10px;
+  cursor: pointer;
+  height: 75px;
+  border-radius: 10px;
+}
 
 
 table { 
@@ -205,9 +221,9 @@ td, th {
                     <div class="card">
 
                       <img src="<?= Yii::$app->request->baseUrl; ?>/images/img_avatar1.png" alt="John" style="width:100%">
-                      <h1>Don Bosco</h1>
-                      <p class="title">donboscokunnath@gmail.com</p>
-                      <p>+91 8129262319</p>
+                      <h1><?php echo $customerDetails[0]['Name']?></h1>
+                      <p class="title"><?php echo $customerDetails[0]['email']?></p>
+                      <p>+971 <?php echo $customerDetails[0]['mobile']?></p>
                       <a href="#"><i class="fa fa-dribbble"></i></a>
                       <a href="#"><i class="fa fa-twitter"></i></a>
                       <a href="#"><i class="fa fa-linkedin"></i></a>
@@ -232,79 +248,106 @@ td, th {
                 <!-- train section -->
                 <div class="bhoechie-tab-content">
                   <div class="all-rows">
-                   <div class="col-md-3">
+                    <div class="col-md-12">
+                      <div class="col-md-3" style="float:right">
+                        <button class="btn btn-success btn-rounded" id="addbtn" data-toggle="modal" data-target="#myModal" style="background-color: #8ab352 !important;margin-bottom: 15px;"><i class="glyphicon glyphicon-plus"></i> New Address</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="all-rows">
+                    <div class="col-md-4">
                       <div class="address-view active" style="padding-left: 26px;">
-                        <input type="checkbox" class="form-check-input" checked="true" id="exampleCheck1">
-                          <span style="padding-left: 18px;">
-                            Default Address
-                          </span>
-                        </div>
-                      </div>
-                    <div class="col-md-3">
-                      <div class="address-view"  style="padding-left: 43px;">
                         <input type="checkbox" class="form-check-input"  id="exampleCheck1">
-                          <span style="padding-left: 18px;">
-                            Address1
-                          </span>
-
-
-
+                        <span style="padding-left: 18px;">
+                          Default Address<hr/>
+                          <p><?php echo $customerDetails[0]['custAddress']?></p>
+                        </span>
                       </div>
                     </div>
-
-                    <div class="col-md-3">
-                      <div class="address-view"  style="padding-left: 43px;">
-                        <input type="checkbox" class="form-check-input"  id="exampleCheck1">
-                          <span style="padding-left: 18px;">
-                            Address2
-                          </span>
-
-
-
+                    <?php foreach ($customerOtherAddress as $key => $value) {?>
+                    <div class="col-md-4">
+                      <div class="address-view" style="padding-left: 26px;">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <span style="padding-left: 18px;">
+                          Address<?=$key+1?><hr/>
+                          <p><?php echo $value['custAddress']?></p>
+                        </span>
                       </div>
                     </div>
+                  <?php } ?>
+                          <!-- <div class="col-md-4">
+                            <div class="address-view"  style="padding-left: 43px;">
+                              <input type="checkbox" class="form-check-input"  id="exampleCheck1">
+                                <span style="padding-left: 18px;">
+                                  Address1
+                                </span>
 
 
-                    <div class="col-md-3">
-                      <div class="address-view"  style="padding-left: 43px;">
-                        <input type="checkbox" class="form-check-input"  id="exampleCheck1">
-                          <span style="padding-left: 18px;">
-                            Address3
-                          </span>
+
+                            </div>
+                          </div>-->
+                          <!-- <div class="col-md-4">
+                            <div class="address-view"  style="padding-left: 43px;">
+                              <input type="checkbox" class="form-check-input"  id="exampleCheck1">
+                                <span style="padding-left: 18px;">
+                                  Address2
+                                </span>
 
 
 
-                      </div>
+                            </div>
+                          </div> -->
                     </div>
-                    </div>
-                    
-                      <form>
-                        <div class="edit-address">
-                        <div class="row" style="margin-top:10px">
-                          <div class="col-md-6">
-                            <input type="text" class="form-control" placeholder="First name">
-                          </div>
-                          <div class="col-md-6">
-                            <input type="text" class="form-control" placeholder="Last name">
-                          </div>
-                        </div>
-                        </div>
-                      </form>
-                    
-
-
-
-
-
-
-
-
                 </div>
+
+
+                <!-- Modal -->
+                  <div id="myModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+
+                      <!-- Modal content-->
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h4 class="modal-title">Add New Address</h4>
+                        </div>
+                        <div class="modal-body">
+                          <div id="errMsg"></div>
+                          <div class="col-md-12">
+                            <label for="newAddress">Address</label>
+                            <textArea class="form-control" name="address" id=newAddress></textArea>
+                          </div>
+                          <div class="col-md-12">
+                            <label for="landmark">Landmark</label>
+                            <input class="form-control" style="height: 30px !important" type="text" name="landmark" id="landmark">
+                          </div>
+                          <div class="col-md-12">
+                            <label for="landmark">Area</label>
+                            <input class="form-control" style="height: 30px !important" type="text" name="area" id="area">
+                          </div>
+                          <div class="col-md-12">
+                            <label for="landmark">Province</label>
+                            <input class="form-control"  style="height: 30px !important" type="text" name="province" id="province">
+                          </div>
+                          <div class="col-md-12">
+                            <label for="landmark">Country</label>
+                            <input class="form-control"  style="height: 30px !important" type="text" name="country" id="country">
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" id="closeBtn" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                          <button type="button" class="btn btn-success" onclick="setAddress()"> Add</button>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
     
                 <!-- hotel search -->
                 <div class="bhoechie-tab-content">
       
-                  <table>
+                  <!-- <table>
                     <thead>
                     <tr>
                       <th>First Name</th>
@@ -324,8 +367,20 @@ td, th {
                       <td>Crimefighter Sorta</td>
                     </tr>
                     </tbody>
-                  </table>
-
+                  </table> -->
+                  <div class="col-md-12" style="height: 450px;overflow-y: scroll;">
+                    <?php for($i=0; $i < 10 ;$i++){?>
+                    <div class="all-rows">
+                      <div class="col-md-12">
+                        <div class="orderHistory" style="padding-left: 26px;">
+                            <div class="col-md-4"><span>Order No: 123456</span></div>
+                            <div class="col-md-4"><span>Payment Mode: Cash on Delivery</span></div>
+                            <div class="col-md-4"><span>Paid Amount: 123 AED</span></div>
+                          </div>
+                        </div>
+                      </div>
+                    <?php } ?>
+                  </div>
 
 
 
@@ -336,17 +391,23 @@ td, th {
 
 
                 <div class="bhoechie-tab-content">
-                    <center>
-                      <h1 class="glyphicon glyphicon-cutlery" style="font-size:12em;color:#82ae46"></h1>
-                      <h2 style="margin-top: 0;color:#82ae46">Cooming Soon</h2>
-                      <h3 style="margin-top: 0;color:#82ae46">Restaurant Diirectory</h3>
-                    </center>
+                    <div class="col-md-12" style="height: 450px;overflow-y: scroll;">
+                    <?php for($i=0; $i < 10 ;$i++){?>
+                    <div class="all-rows">
+                      <div class="col-md-12">
+                        <div class="orderHistory" style="padding-left: 26px;">
+                            <div class="col-md-4"><span>Order No: 123456</span></div>
+                            <div class="col-md-4"><span>Payment Mode: Cash on Delivery</span></div>
+                            <div class="col-md-4"><span>Paid Amount: 123 AED</span></div>
+                          </div>
+                        </div>
+                      </div>
+                    <?php } ?>
+                  </div>
                 </div>
                 <div class="bhoechie-tab-content">
-                    <center>
-                      <h1 class="glyphicon glyphicon-credit-card" style="font-size:12em;color:#82ae46"></h1>
-                      <h2 style="margin-top: 0;color:#82ae46">Cooming Soon</h2>
-                      <h3 style="margin-top: 0;color:#82ae46">Credit Card</h3>
+                    <center style="margin-top:20%">
+                      <h4 class="glyphicon glyphicon-log-out"></h4><br/>Logout
                     </center>
                 </div>
             </div>
@@ -388,3 +449,82 @@ td, th {
     });
 ")
 ?>
+<script>
+  var baseurl = '<?php print \yii\helpers\Url::base() . "/"; ?>';
+  $("#addbtn").click(function(){
+    $("#errMsg").html("");
+    $("#newAddress").css("border","1px solid #ccc");
+    $("#landmark").css("border","1px solid #ccc");
+    $("#area").css("border","1px solid #ccc");
+    $("#province").css("border","1px solid #ccc");
+    $("#country").css("border","1px solid #ccc");
+    $("#newAddress").val("");
+    $("#landmark").val("");
+    $("#area").val("");
+    $("#province").val("");
+    $("#country").val("");
+  });
+  function setAddress(){
+    var address = ($("#newAddress").val()) ? $("#newAddress").val() : "";
+    var landmark = ($("#landmark").val()) ? $("#landmark").val() : "";
+    var area = ($("#area").val()) ? $("#area").val() : "";
+    var province = ($("#province").val()) ? $("#province").val() : "";
+    var country = ($("#country").val()) ? $("#country").val() : "";
+    var flag = 0;
+    if(address!=""){
+      $("#newAddress").css("border","1px solid #ccc");
+    }else{
+      $("#newAddress").css("border","1px solid #f00");
+      flag = 1;
+    }
+    if(landmark!=""){
+      $("#landmark").css("border","1px solid #ccc");
+    }else{
+      $("#landmark").css("border","1px solid #f00");
+      flag = 1;
+    }
+    if(area!=""){
+      $("#area").css("border","1px solid #ccc");
+    }else{
+      $("#area").css("border","1px solid #f00");
+      flag = 1;
+    }
+    if(province!=""){
+      $("#province").css("border","1px solid #ccc");
+    }else{
+      $("#province").css("border","1px solid #f00");
+      flag = 1;
+    }
+    if(country!=""){
+      $("#country").css("border","1px solid #ccc");
+    }else{
+      $("#country").css("border","1px solid #f00");
+      flag = 1;
+    }
+    if(flag != 0){
+      $("#errMsg").html("<p style='color:#f00'>Please fill the required fields</p>");
+    }else{
+      $.ajax({
+          url: baseurl+'dashboard/save-address',
+          type: 'POST',
+          data: {address: address,landmark: landmark,area: area,province: province,country:country},
+          success: function (result) {
+            alert(result);
+            if(result > 3){
+              $("#errMsg").html("<p style='color:#f00'>Already you have added three address</p>");
+              setTimeout(function(){
+                $("#closeBtn").click();
+              },2000);
+            }else{
+              $("#errMsg").html("<p style='color:#8ab352'>Added new address successfully</p>");
+              setTimeout(function(){
+                $("#closeBtn").click();
+                window.location.href="";
+              },2000);
+            }
+          }
+      });
+    }
+
+  }
+</script>
