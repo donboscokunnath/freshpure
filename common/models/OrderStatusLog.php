@@ -50,4 +50,5 @@ class OrderStatusLog extends \yii\db\ActiveRecord
             'date' => 'Date',
         ];
     }
+    
 }

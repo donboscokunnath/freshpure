@@ -79,17 +79,9 @@ DashboardAsset::register($this);
                                     
                                 ],],    
 
-
-                                ['label' => '<span class="fa fa-shopping-cart icon-wrap"></span>&nbsp;<span class="menulist">Orders<i class="fa fa-angle-left pull-right"></i></span>', 
-                                    'url' => ['#'],
-                                        'template' => '<a href="{url}" >{label}</a>',
-                                        'items' => [ 
-
-                                    ['label' => '<span class="fa fa-sitemap" title="Create Investigations"></span>&nbsp;<span class="menulist">Create Investigations</span>', 'url' => ['/investigations/create']],
-                                    
-                                    ['label' => '<span class="fa fa-sitemap" title="List Investigations"></span>&nbsp;<span class="menulist">List Investigations</span> ', 'url' => ['/investigations/index']],
-                                    
-                                ],], 
+                                ['label' => '<span class="fa fa-picture-o icon-wrap"></span>&nbsp;<span class="menulist">Orders</span>', 
+                                    'url' => ['order-details//'],
+                                    ], 
                                 ['label' => '<span class="fa fa-user-md  icon-wrap"></span>&nbsp;<span class="menulist">Customer Details</span>', 
                                     'url' => ['customer-address-mapping/'],
                                     ],

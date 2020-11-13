@@ -60,4 +60,48 @@ class OrderDetails extends \yii\db\ActiveRecord
             'discount'=>'Discount'
         ];
     }
+
+    public function getOrderStatus($status){
+        if($status == 1){
+            return 'Pending';
+        }elseif($status == 2){
+            return 'Confirmed';
+        }elseif($status == 3){
+            return 'Shipped';
+        }elseif ($status == 4) {
+            return 'Completed';
+        }else{
+            return '';
+        }
+    }
+
+    public function getProductsDetails() {
+        return $this->hasOne(ProductsMaster::className(), ['id' => 'product_id']);
+    }
+    public function getProductsUnitDetails() {
+        return $this->hasOne(UnitMaster::className(), ['id' => 'unit']);
+    }
+
+    public function updateOrderStatus($userId,$orderId,$status,$remark)
+    {
+        $con = \Yii::$app->db;
+        $transaction = $con->beginTransaction();
+        $query = "UPDATE order_details SET status = '$status' where order_id = '$orderId' AND user_id = '$userId';";
+        $result = $con->createCommand($query)->execute();
+        if($result){
+            $insert = "INSERT INTO order_status_log(user_id,order_id,status_id,remar,date)VALUES('$userId','$orderId','$status','$remark',now());";
+            $result1 = $con->createCommand($insert)->execute();
+            if($result1){
+                $transaction->commit();
+                return 1;
+            }else{
+                $transaction->rollback();
+                return 0;
+            }
+        }else{
+            $transaction->rollback();
+            return 0;
+        }
+        
+    }
 }

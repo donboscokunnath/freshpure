@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use Yii; 
 use common\models\OrderDetails;
+use common\models\OrderStatusLog;
 use common\models\OrderDetailsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -33,7 +34,7 @@ class OrderDetailsController extends Controller
      * Lists all OrderDetails models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($msg='')
     {
         $searchModel = new OrderDetailsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -41,6 +42,7 @@ class OrderDetailsController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'msg' => $msg
         ]);
     }
 
@@ -121,4 +123,24 @@ class OrderDetailsController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    public function actionChangeStatus()
+    {
+        $model = new OrderDetails();
+        $model1 = new OrderStatusLog();
+        $post = Yii::$app->request->post();
+        if($post){
+            $userId = $post['userId'];
+            $orderId = $post['orderId'];
+            $remark  = $post['remark'];
+            $status  = $post['status'];
+            if($model->updateOrderStatus($userId,$orderId,$status,$remark))
+            {
+                return $this->redirect(['index','msg'=>1]);
+            }else{
+                return $this->redirect(['index','msg'=>2]);
+            }
+        }
+        
+    }
+    
 }
