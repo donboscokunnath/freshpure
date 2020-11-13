@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\file\FileInput;
+
 /* @var $this yii\web\View */
 /* @var $model common\models\AdminDetails */
 /* @var $form yii\widgets\ActiveForm */
@@ -20,6 +21,9 @@ use kartik\file\FileInput;
                 ],
     ]);
     ?>
+
+
+
 
     <?php //$form->field($model, 'admin_id')->textInput() ?>
 

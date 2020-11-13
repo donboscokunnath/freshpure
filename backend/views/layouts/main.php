@@ -50,7 +50,7 @@ DashboardAsset::register($this);
                                 'options' => ['class' => 'sidebar-menu treeview'],
                                 'items' => [
                                  ['label' => '<span class="fa fa-picture-o icon-wrap"></span>&nbsp;<span class="menulist">Banners</span>', 
-                                    'url' => ['doctors-details/'],
+                                    'url' => ['banner/'],
                                     ],    
                                
                                 ['label' => '<span class="fa fa-bars icon-wrap"></span>&nbsp;<span class="menulist">Masters<i class="fa fa-angle-left pull-right"></i></span>', 
@@ -58,9 +58,9 @@ DashboardAsset::register($this);
                                         'template' => '<a href="{url}" >{label}</a>',
                                         'items' => [ 
 
-                                    ['label' => '<span class="fa fa-sitemap" title="Create Category"></span>&nbsp;<span class="menulist">Create Category</span>', 'url' => ['/category/create']],
+                                    ['label' => '<span class="fa fa-sitemap" title="Category Master"></span>&nbsp;<span class="menulist">Category Master</span>', 'url' => ['category-master/']],
                                     
-                                    ['label' => '<span class="fa fa-sitemap" title="List Category"></span>&nbsp;<span class="menulist">List Category</span> ', 'url' => ['/category/index']],
+                                    ['label' => '<span class="fa fa-sitemap" title="Unit Master"></span>&nbsp;<span class="menulist">Unit Master</span> ', 'url' => ['unit-master/']],
                                     
                                 ],],    
 
@@ -73,9 +73,9 @@ DashboardAsset::register($this);
                                         'template' => '<a href="{url}" >{label}</a>',
                                         'items' => [ 
 
-                                    ['label' => '<span class="fa fa-sitemap" title="Create Investigations"></span>&nbsp;<span class="menulist">Create Investigations</span>', 'url' => ['/investigations/create']],
+                                    ['label' => '<span class="fa fa-sitemap" title="List Products"></span>&nbsp;<span class="menulist">List Products</span>', 'url' => ['/products-master']],
                                     
-                                    ['label' => '<span class="fa fa-sitemap" title="List Investigations"></span>&nbsp;<span class="menulist">List Investigations</span> ', 'url' => ['/investigations/index']],
+                                    ['label' => '<span class="fa fa-sitemap" title="Add Products"></span>&nbsp;<span class="menulist">Add Products</span> ', 'url' => ['/products-master/create']],
                                     
                                 ],],    
 
@@ -91,7 +91,7 @@ DashboardAsset::register($this);
                                     
                                 ],], 
                                 ['label' => '<span class="fa fa-user-md  icon-wrap"></span>&nbsp;<span class="menulist">Customer Details</span>', 
-                                    'url' => ['doctors-details/'],
+                                    'url' => ['customer-address-mapping/'],
                                     ],
 
                                     ['label' => '<span class="fa fa-cogs  icon-wrap"></span>&nbsp;<span class="menulist">Settings</span>', 
@@ -170,7 +170,7 @@ DashboardAsset::register($this);
 echo '<img src="' .$imagePath. '" />';
 
   ?>                   
-                    <span class="admin-name"><?=Yii::$app->user->identity->email?></span>
+                    <span class="admin-name"><?=Yii::$app->user->identity->mobile?></span>
                                                             <i class="fa fa-angle-down edu-icon edu-down-arrow"></i>
                                                 </a>
                                                 <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated zoomIn">
