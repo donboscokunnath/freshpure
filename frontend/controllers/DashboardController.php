@@ -79,5 +79,43 @@ class DashboardController extends Controller {
             $saveAddress = $model->saveAddress($address,$landmark,$area,$province,$country,$customerId);
         }
 
-        
+        public function actionSaveAddressDefault(){
+            $post = Yii::$app->request->post();
+            $address = $post['addressId'];
+            $customerId = Yii::$app->user->identity->id;
+            $model = new CustomerAddressMapping();
+            $saveAddress = $model->saveAddressDefault($address,$customerId);
+        }
+
+        public function actionGetAddressDetails(){
+            $post = Yii::$app->request->post();
+            $address = $post['addressId'];
+            $customerId = Yii::$app->user->identity->id;
+            $model = new CustomerAddressMapping();
+            $getAddress = $model->getAddressDetails($address,$customerId);
+            return json_encode($getAddress[0]);
+        }
+
+        public function actionDeleteAddress(){
+            $post = Yii::$app->request->post();
+            $id = $post['addressId'];
+            $customerId = Yii::$app->user->identity->id;
+            $model = new CustomerAddressMapping();
+            $getAddress = $model->deleteAddress($id,$customerId);
+            return $getAddress;
+        }
+
+        public function actionEditAddress(){
+            $post = Yii::$app->request->post();
+            $address = $post['address'];
+            $landmark = $post['landmark'];
+            $area = $post['area'];
+            $province = $post['province'];
+            $country = $post['country'];
+            $id = $post['id'];
+            $customerId = Yii::$app->user->identity->id;
+            $model = new CustomerAddressMapping();
+            $editAddress = $model->editAddress($address,$landmark,$area,$province,$country,$customerId,$id);
+            echo $editAddress;
+        }
 }
