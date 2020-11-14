@@ -256,47 +256,33 @@ td, th {
                   </div>
                   <div class="all-rows">
                     <div class="col-md-4">
-                      <div class="address-view active" style="padding-left: 26px;">
-                        <input type="checkbox" class="form-check-input"  id="exampleCheck1">
+                      <div class="address-view <?php echo ($customerDetails[0]['used_flag'] == 1) ? 'active' : ''?>" style="padding-left: 26px;">
+                        <input type="radio" class="form-check-input checkedInput" <?php if($customerDetails[0]['used_flag'] == 1){ ?> checked="checked" <?php } ?> value="<?php echo $customerDetails[0]['id']?>" name="seladdress" id="exampleCheck1">
                         <span style="padding-left: 18px;">
                           Default Address<hr/>
-                          <p><?php echo $customerDetails[0]['custAddress']?></p>
+                          <p style="padding-right: 5px"><?php echo $customerDetails[0]['custAddress']?></p>
                         </span>
                       </div>
+                      <span style="float:right;margin-right: 20px;bottom: 10px">
+                          <!-- <a class="deleteAddress" style="width: 10px;color: #f00;margin-right: 10px;border:none !important;font-size: 13px;" data-toggle="modal" data-target="#myModal2" data-id="<?php //echo $customerDetails[0]['id']?>"><i class="glyphicon glyphicon-trash"></i></a> -->
+                          <a class="editAddress" style="width: 10px;color:#8ab352;border:none !important;font-size: 13px;" data-toggle="modal" data-target="#myModal1" data-id="<?php echo $customerDetails[0]['id']?>"><i class="glyphicon glyphicon-edit"></i></a>
+                        </span>
                     </div>
                     <?php foreach ($customerOtherAddress as $key => $value) {?>
                     <div class="col-md-4">
-                      <div class="address-view" style="padding-left: 26px;">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                      <div class="address-view <?php echo ($value['used_flag'] == 1) ? 'active' : ''?>" style="padding-left: 26px;">
+                        <input type="radio" class="form-check-input checkedInput" name="seladdress" <?php if($value['used_flag'] == 1){ ?> checked="checked" <?php } ?> value="<?php echo $value['id']?>" id="exampleCheck1">
                         <span style="padding-left: 18px;">
                           Address<?=$key+1?><hr/>
-                          <p><?php echo $value['custAddress']?></p>
+                          <p style="padding-right: 5px"><?php echo $value['custAddress']?></p>
                         </span>
                       </div>
+                      <span style="float:right;margin-right: 20px;bottom: 10px">
+                          <a class="deleteAddress" style="width: 10px;color: #f00;margin-right: 10px;border:none !important;font-size: 13px;" data-toggle="modal" data-target="#myModal2" data-id="<?php echo $value['id']?>"><i class="glyphicon glyphicon-trash"></i></a>
+                          <a class="editAddress" style="width: 10px;color:#8ab352;border:none !important;font-size: 13px;" data-toggle="modal" data-target="#myModal1" data-id="<?php echo $value['id']?>"><i class="glyphicon glyphicon-edit"></i></a>
+                        </span>
                     </div>
                   <?php } ?>
-                          <!-- <div class="col-md-4">
-                            <div class="address-view"  style="padding-left: 43px;">
-                              <input type="checkbox" class="form-check-input"  id="exampleCheck1">
-                                <span style="padding-left: 18px;">
-                                  Address1
-                                </span>
-
-
-
-                            </div>
-                          </div>-->
-                          <!-- <div class="col-md-4">
-                            <div class="address-view"  style="padding-left: 43px;">
-                              <input type="checkbox" class="form-check-input"  id="exampleCheck1">
-                                <span style="padding-left: 18px;">
-                                  Address2
-                                </span>
-
-
-
-                            </div>
-                          </div> -->
                     </div>
                 </div>
 
@@ -340,6 +326,68 @@ td, th {
                         </div>
                       </div>
 
+                    </div>
+                  </div>
+
+                  <!-- Modal -->
+                  <div id="myModal1" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+
+                      <!-- Modal content-->
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h4 class="modal-title">Edit Address</h4>
+                        </div>
+                        <div class="modal-body">
+                          <div id="errMsgEdit"></div>
+                          <div class="col-md-12">
+                            <label for="newAddress">Address</label>
+                            <textArea class="form-control" name="address" id="editAddress"></textArea>
+                          </div>
+                          <div class="col-md-12">
+                            <label for="landmark">Landmark</label>
+                            <input class="form-control" style="height: 30px !important" type="text" name="landmark" id="editLandmark">
+                          </div>
+                          <div class="col-md-12">
+                            <label for="landmark">Area</label>
+                            <input class="form-control" style="height: 30px !important" type="text" name="area" id="editArea">
+                          </div>
+                          <div class="col-md-12">
+                            <label for="landmark">Province</label>
+                            <input class="form-control"  style="height: 30px !important" type="text" name="province" id="editProvince">
+                          </div>
+                          <div class="col-md-12">
+                            <label for="landmark">Country</label>
+                            <input class="form-control"  style="height: 30px !important" type="text" name="country" id="editCountry">
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <input type="hidden" id='editId' value="">
+                          <button type="button" id="closeBtnEdit" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                          <button type="button" class="btn btn-success" onclick="editAddress()"> Update</button>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                  <!-- Delete confirm Modal -->
+                  <div id="myModal2" class="modal fade" role="dialog" style="margin-top: 15%;">
+                    <div class="modal-dialog" >
+
+                      <!-- Modal content-->
+                      <div class="modal-content" style="padding: 20px 0px 20px 0px">
+                        <div class="modal-header">
+                          <h4 class="modal-title">Do you want to delete this address ?</h4>
+                          <br/>
+                          <input type="hidden" id='deleteId' value="">
+                          <button type="button" style="width:50px; float:right; margin-right:5px;"  id="closeBtnDelete" class="btn btn-default btn-sm" data-dismiss="modal">No</button>
+
+                          <button type="button" style="width:50px;float:right; margin-right:5px;" class="btn btn-danger btn-sm" onclick="deleteAddress()"> Yes</button>
+                        </div>
+                        <div class="col-md-12 text-center" id="delMsg" style="display: none"><p style="color: #8ab352"> Address deleted from the list</p></div>
+                      </div>
                     </div>
                   </div>
 
@@ -464,6 +512,60 @@ td, th {
     $("#province").val("");
     $("#country").val("");
   });
+  $(".checkedInput").click(function(){
+    var chk = $(this).val();
+    $(".address-view").removeClass("active");
+    $(this).parent("div").addClass("active");
+    $.ajax({
+        url: baseurl+'dashboard/save-address-default',
+        type: 'POST',
+        data: {addressId:chk},
+        success: function (result) {
+          
+        }
+    });
+  });
+
+  $(".editAddress").click(function(){
+      var chk =$(this).data('id');
+      $.ajax({
+        url: baseurl+'dashboard/get-address-details',
+        type: 'POST',
+        data: {addressId:chk},
+        dataType: 'json',
+        success: function (result) {
+          $('#editAddress').val(result.address);
+          $('#editLandmark').val(result.llandmark);
+          $('#editArea').val(result.area);
+          $('#editProvince').val(result.province);
+          $('#editCountry').val(result.country);
+          $('#editId').val(chk);
+        }
+    });
+  });
+
+  $(".deleteAddress").click(function(){
+      var chk =$(this).data('id');
+      $('#deleteId').val(chk);
+  });
+
+  function deleteAddress(){
+    var id = $("#deleteId").val();
+    $.ajax({
+        url: baseurl+'dashboard/delete-address',
+        type: 'POST',
+        data: {addressId:id},
+        dataType: 'json',
+        success: function (result) {
+          $("#delMsg").show();
+          setTimeout(function(){
+            $("#closeBtnDelete").click();
+            window.location.href="";
+          },500);
+        }
+    });
+  }
+
   function setAddress(){
     var address = ($("#newAddress").val()) ? $("#newAddress").val() : "";
     var landmark = ($("#landmark").val()) ? $("#landmark").val() : "";
@@ -509,7 +611,6 @@ td, th {
           type: 'POST',
           data: {address: address,landmark: landmark,area: area,province: province,country:country},
           success: function (result) {
-            alert(result);
             if(result > 3){
               $("#errMsg").html("<p style='color:#f00'>Already you have added three address</p>");
               setTimeout(function(){
@@ -522,6 +623,63 @@ td, th {
                 window.location.href="";
               },2000);
             }
+          }
+      });
+    }
+
+  }
+
+  function editAddress(){
+    var address = ($("#editAddress").val()) ? $("#editAddress").val() : "";
+    var landmark = ($("#editLandmark").val()) ? $("#editLandmark").val() : "";
+    var area = ($("#editArea").val()) ? $("#editArea").val() : "";
+    var province = ($("#editProvince").val()) ? $("#editProvince").val() : "";
+    var country = ($("#editCountry").val()) ? $("#editCountry").val() : "";
+    var id = ($("#editId").val()) ? $("#editId").val() : "";
+    var flag = 0;
+    if(address!=""){
+      $("#editAddress").css("border","1px solid #ccc");
+    }else{
+      $("#editAddress").css("border","1px solid #f00");
+      flag = 1;
+    }
+    if(landmark!=""){
+      $("#editLandmark").css("border","1px solid #ccc");
+    }else{
+      $("#editLandmark").css("border","1px solid #f00");
+      flag = 1;
+    }
+    if(area!=""){
+      $("#editArea").css("border","1px solid #ccc");
+    }else{
+      $("#editArea").css("border","1px solid #f00");
+      flag = 1;
+    }
+    if(province!=""){
+      $("#editProvince").css("border","1px solid #ccc");
+    }else{
+      $("#editProvince").css("border","1px solid #f00");
+      flag = 1;
+    }
+    if(country!=""){
+      $("#editCountry").css("border","1px solid #ccc");
+    }else{
+      $("#editCountry").css("border","1px solid #f00");
+      flag = 1;
+    }
+    if(flag != 0){
+      $("#errMsgEdit").html("<p style='color:#f00'>Please fill the required fields</p>");
+    }else{
+      $.ajax({
+          url: baseurl+'dashboard/edit-address',
+          type: 'POST',
+          data: {address: address,landmark: landmark,area: area,province: province,country:country,id:id},
+          success: function (result) {
+            $("#errMsgEdit").html("<p style='color:#8ab352'>Address updated successfully</p>");
+            setTimeout(function(){
+              $("#closeBtnEdit").click();
+              window.location.href="";
+            },2000);
           }
       });
     }
