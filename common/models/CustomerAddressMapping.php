@@ -83,7 +83,7 @@ class CustomerAddressMapping extends \yii\db\ActiveRecord
 
     public function getCustomerDetails($id){
         $con = \Yii::$app->db;
-        $query = 'SELECT CONCAT(first_name," ",last_name) as Name,mobile,email,CONCAT(address, ",<br/>", llandmark, ",<br/>", area,",<br/>",province,",<br/>",country) AS custAddress FROM customer_address_mapping WHERE type =1';
+        $query = 'SELECT id,CONCAT(first_name," ",last_name) as Name,mobile,email,CONCAT(address, ",<br/>", llandmark, ",<br/>", area,",<br/>",province,",<br/>",country) AS custAddress, used_flag FROM customer_address_mapping WHERE type =1';
          if($id){
             $query .= " AND customer_id = $id";
          }
@@ -93,7 +93,7 @@ class CustomerAddressMapping extends \yii\db\ActiveRecord
 
     public function getCustomerAddress($id){
         $con = \Yii::$app->db;
-        $query = 'SELECT CONCAT(address, ",<br/>", llandmark, ",<br/>", area,",<br/>",province,",<br/>",country) AS custAddress FROM customer_address_mapping WHERE type =2';
+        $query = 'SELECT id,CONCAT(address, ",<br/>", llandmark, ",<br/>", area,",<br/>",province,",<br/>",country) AS custAddress, used_flag FROM customer_address_mapping WHERE type =2';
          if($id){
             $query .= " AND customer_id = $id";
          }
@@ -113,4 +113,36 @@ class CustomerAddressMapping extends \yii\db\ActiveRecord
             echo '4';
         }
     }
+
+    public function saveAddressDefault($address,$customerId){
+        $con = \Yii::$app->db;
+        $query = "UPDATE customer_address_mapping SET used_flag = 0 WHERE customer_id = '$customerId'";
+        $result = $con->createCommand($query)->execute();
+        $query = "UPDATE customer_address_mapping SET used_flag = 1 WHERE customer_id = '$customerId' AND id = '$address'";
+        $result = $con->createCommand($query)->execute();
+        return $result;
+    }
+
+    public function getAddressDetails($address,$customerId){
+        $con = \Yii::$app->db;
+        $query = "SELECT llandmark,area,address,province,country FROM customer_address_mapping WHERE id='$address' AND customer_id = '$customerId'";
+        $result = $con->createCommand($query)->queryAll();
+        return $result;
+    }
+
+    public function editAddress($address,$landmark,$area,$province,$country,$customerId,$id){
+        $con = \Yii::$app->db;
+        $query = "UPDATE customer_address_mapping SET llandmark = '$landmark',area = '$area',address = '$address',province = '$province',country = '$country' WHERE customer_id = '$customerId' AND id = '$id'";
+        $result = $con->createCommand($query)->execute();
+        return $result;
+    }
+
+    public function deleteAddress($id,$customerId){
+        $con = \Yii::$app->db;
+        $query = "DELETE FROM customer_address_mapping WHERE id = '$id' AND customer_id = '$customerId'";
+        $result = $con->createCommand($query)->execute();
+        return $result;
+    }
+
+    
 }
